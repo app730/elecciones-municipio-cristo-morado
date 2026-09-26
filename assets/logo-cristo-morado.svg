@@ -1,0 +1,83 @@
+<svg width="620" height="620" viewBox="0 0 620 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gold" x1="310" y1="30" x2="310" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8E9B5"/>
+      <stop offset="0.4" stop-color="#D9B25B"/>
+      <stop offset="1" stop-color="#B8862A"/>
+    </linearGradient>
+    <linearGradient id="red" x1="310" y1="140" x2="310" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E35B4C"/>
+      <stop offset="1" stop-color="#C22929"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="310" y1="160" x2="310" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#77B5E6"/>
+      <stop offset="1" stop-color="#3F7FC6"/>
+    </linearGradient>
+    <linearGradient id="sun" x1="310" y1="278" x2="310" y2="380" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7EE8C"/>
+      <stop offset="1" stop-color="#F8D849"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M310 32L462 70L516 182C544 238 550 302 524 359C498 416 456 463 403 493L310 548L217 493C164 463 122 416 96 359C70 302 76 238 104 182L158 70L310 32Z" fill="url(#gold)" stroke="#F5F2EA" stroke-width="14"/>
+  <path d="M310 68L423 99L466 183C488 227 494 272 474 315C454 357 421 396 376 421L310 459L244 421C199 396 166 357 146 315C126 272 132 227 154 183L197 99L310 68Z" fill="#F5F2EA" fill-opacity="0.18"/>
+
+  <path d="M310 108L396 129L432 198C447 229 455 262 447 296C436 344 400 384 350 409L310 430L270 409C220 384 184 344 173 296C165 262 173 229 188 198L224 129L310 108Z" fill="#F4F7FB" fill-opacity="0.08"/>
+
+  <path d="M176 170H444L416 298C398 360 355 406 310 440C265 406 222 360 204 298L176 170Z" fill="url(#red)" stroke="#D8B15B" stroke-width="8"/>
+  <path d="M310 150L360 190L330 240L370 250L310 302L250 250L290 240L260 190L310 150Z" fill="#F8D849"/>
+  <path d="M176 170H444V273C444 322 427 370 393 404L310 468L227 404C193 370 176 322 176 273V170Z" fill="url(#blue)" stroke="#D8B15B" stroke-width="8"/>
+
+  <path d="M225 204H395V283H225V204Z" fill="#F5F7F9" fill-opacity="0.18"/>
+  <path d="M274 110L306 120L326 160L310 200L289 156L274 110Z" fill="#F1C147"/>
+  <path d="M345 110L313 120L293 160L310 200L332 156L345 110Z" fill="#F1C147"/>
+  <path d="M310 118L341 210H279L310 118Z" fill="#F8C340" fill-opacity="0.85"/>
+  <path d="M271 176C260 169 249 162 239 156C249 145 258 135 265 126C256 119 246 112 236 104C250 101 266 107 277 117C289 100 307 93 326 95C316 109 310 128 308 145C304 150 289 164 271 176Z" fill="#F8E9A6" fill-opacity="0.9"/>
+
+  <path d="M310 148V261" stroke="#F0D66C" stroke-width="12" stroke-linecap="round"/>
+  <path d="M286 170H334" stroke="#F8E9A6" stroke-width="10" stroke-linecap="round"/>
+  <path d="M281 200H339" stroke="#F8E9A6" stroke-width="10" stroke-linecap="round"/>
+  <path d="M312 147C347 150 384 162 409 190C429 214 439 245 434 279C421 289 401 298 381 301C355 305 326 302 302 290C285 282 269 271 257 257C246 243 238 225 237 205C247 175 276 150 312 147Z" fill="#F0DA74" fill-opacity="0.12"/>
+
+  <circle cx="310" cy="318" r="52" fill="url(#sun)"/>
+  <path d="M310 262V214" stroke="#F2CC49" stroke-width="7" stroke-linecap="round"/>
+  <path d="M310 372V420" stroke="#F2CC49" stroke-width="7" stroke-linecap="round"/>
+  <path d="M264 318H212" stroke="#F2CC49" stroke-width="7" stroke-linecap="round"/>
+  <path d="M356 318H408" stroke="#F2CC49" stroke-width="7" stroke-linecap="round"/>
+  <path d="M282 284L248 250" stroke="#F2CC49" stroke-width="7" stroke-linecap="round"/>
+  <path d="M338 284L372 250" stroke="#F2CC49" stroke-width="7" stroke-linecap="round"/>
+  <path d="M282 352L248 386" stroke="#F2CC49" stroke-width="7" stroke-linecap="round"/>
+  <path d="M338 352L372 386" stroke="#F2CC49" stroke-width="7" stroke-linecap="round"/>
+
+  <path d="M198 360C225 290 278 248 310 246C341 248 394 289 422 360L198 360Z" fill="#B6A8E9" fill-opacity="0.9"/>
+  <path d="M224 362H396L377 450H243L224 362Z" fill="#C9C0EE" fill-opacity="0.6"/>
+  <path d="M233 362C246 322 271 285 310 285C349 285 374 322 387 362H233Z" fill="#D8D3F9" fill-opacity="0.7"/>
+  <path d="M209 365L260 334L255 361L209 365Z" fill="#6D5E98" fill-opacity="0.8"/>
+  <path d="M411 365L360 334L365 361L411 365Z" fill="#6D5E98" fill-opacity="0.8"/>
+
+  <path d="M52 438C117 428 168 397 203 359C223 337 236 310 245 286H377C385 310 399 337 418 359C453 397 504 428 569 438L548 484C488 465 436 454 382 454H238C184 454 132 465 72 484L52 438Z" fill="#F9F8F2" fill-opacity="0.8"/>
+
+  <path d="M178 166H442L405 252C391 285 351 310 310 340C269 310 229 285 215 252L178 166Z" fill="rgba(255,255,255,0.08)"/>
+
+  <text x="310" y="112" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="78" fill="#F7F5F0" letter-spacing="2">I</text>
+  <text x="310" y="112" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="78" fill="#F7F5F0" letter-spacing="2" transform="translate(76 0)">E</text>
+
+  <g>
+    <path d="M310 230C298 230 286 235 278 245V274C278 286 289 295 302 295H318C331 295 342 286 342 274V245C334 235 322 230 310 230Z" fill="#C78A2D"/>
+    <path d="M300 182L310 150L320 182H300Z" fill="#F6E8A7"/>
+    <path d="M316 182H327V225H310V196H298V225H282V182H294L310 165L316 182Z" fill="#F6E8A7"/>
+    <path d="M181 225C214 210 232 189 246 162C251 170 256 181 260 193C278 182 302 176 325 176C351 176 376 183 394 196C399 183 404 171 410 162C423 188 441 209 475 224C442 244 386 253 345 253C302 253 250 246 181 225Z" fill="#E9D89B" fill-opacity="0.6"/>
+  </g>
+
+  <g>
+    <text x="310" y="320" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="48" fill="#0C2A4F">CRISTO</text>
+    <text x="310" y="366" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="36" fill="#0C2A4F">MORADO</text>
+  </g>
+
+  <g>
+    <path d="M190 448H430C436 448 441 452 441 458V474C441 480 436 484 430 484H190C184 484 179 480 179 474V458C179 452 184 448 190 448Z" fill="#F6F7F0" fill-opacity="0.96"/>
+    <text x="310" y="475" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="15" fill="#1F365D">ESTUDIO</text>
+    <text x="310" y="500" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="15" fill="#1F365D">DISCIPLINA</text>
+    <text x="310" y="525" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="15" fill="#1F365D">SUPERACIÓN</text>
+  </g>
+</svg>
