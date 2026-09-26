@@ -16,60 +16,96 @@ const padronBase = [
   { dni: "20345678", nombre: "José Huamán", grado: "1°B", estado: "No votó" }
 ];
 
+const firebaseConfig = {
+  apiKey: "AIzaSyAClUbtJsRmvajMwYoEuedavhsfLiIrCXA",
+  authDomain: "cristo-morado-elecciones.firebaseapp.com",
+  databaseURL: "https://cristo-morado-elecciones-default-rtdb.firebaseio.com",
+  projectId: "cristo-morado-elecciones",
+  storageBucket: "cristo-morado-elecciones.firebasestorage.app",
+  messagingSenderId: "833819628435",
+  appId: "1:833819628435:web:1bc367651b434b2b198e66"
+};
+
 const defaultState = {
-  votes: {
-    lista1: 0,
-    lista2: 0,
-    blanco: 0,
-  },
-  voters: padronBase.map((student) => ({ ...student })),
+  votes: { lista1: 0, lista2: 0, blanco: 0 },
+  voters: padronBase.map((student) => ({ ...student }))
 };
 
 let currentVoter = null;
+let db = null;
+let isFirebaseReady = false;
 
-function getState() {
+function initFirebase() {
+  try {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    db = firebase.database();
+    isFirebaseReady = true;
+    return true;
+  } catch (error) {
+    console.warn("Firebase no se pudo inicializar:", error);
+    return false;
+  }
+}
+
+function getLocalState() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (!saved) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultState));
     return structuredClone(defaultState);
   }
-
   return JSON.parse(saved);
 }
 
-function saveState(state) {
+function saveLocalState(state) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
-function showSection(sectionId) {
-  const sections = [
-    "roleSelector",
-    "voterSection",
-    "voteSection",
-    "confirmationSection",
-    "committeeSection",
-  ];
+function getState() {
+  return getLocalState();
+}
 
-  sections.forEach((id) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.classList.toggle("hidden", id !== sectionId);
+function saveState(state) {
+  saveLocalState(state);
+  if (isFirebaseReady && db) {
+    db.ref("elecciones/cristo-morado").set(state).catch((err) => console.error("Error Firebase:", err));
+  }
+}
+
+function syncFromFirebase() {
+  if (!isFirebaseReady || !db) return;
+
+  const ref = db.ref("elecciones/cristo-morado");
+  ref.on("value", (snapshot) => {
+    const data = snapshot.val();
+    if (data && data.voters) {
+      saveLocalState(data);
+      if (document.getElementById("resultsPanel") && !document.getElementById("resultsPanel").classList.contains("hidden")) {
+        renderResults();
+      }
     }
   });
 }
 
-function setMessage(elId, text, type = "") {
-  const el = document.getElementById(elId);
-  if (!el) return;
+function showSection(sectionId) {
+  const sections = ["roleSelector", "voterSection", "voteSection", "confirmationSection", "committeeSection"];
+  sections.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle("hidden", id !== sectionId);
+  });
+}
 
+function setMessage(id, text, type = "") {
+  const el = document.getElementById(id);
+  if (!el) return;
   el.textContent = text;
   el.className = "message";
   if (type) el.classList.add(type);
 }
 
 function verifyDNI() {
-  const input = document.getElementById("dniInput");
-  const dni = input.value.trim();
+  const dni = document.getElementById("dniInput").value.trim();
 
   if (!/^\d{8}$/.test(dni)) {
     setMessage("dniMessage", "Ingrese un DNI válido de 8 dígitos.", "error");
@@ -92,22 +128,20 @@ function verifyDNI() {
   currentVoter = voter;
   document.getElementById("voterInfo").textContent = `${voter.nombre} - ${voter.grado}`;
   setMessage("dniMessage", "DNI verificado correctamente.", "success");
-
   showSection("voteSection");
 }
 
-function castVote(vote) {
+function castVote(voteType) {
   if (!currentVoter) return;
 
   const state = getState();
   const index = state.voters.findIndex((student) => student.dni === currentVoter.dni);
 
-  if (index < 0) return;
+  if (index === -1) return;
 
   state.voters[index].estado = "Votó";
-  state.votes[vote] += 1;
+  state.votes[voteType] = (state.votes[voteType] || 0) + 1;
   saveState(state);
-
   showSection("confirmationSection");
 }
 
@@ -115,28 +149,21 @@ function renderResults() {
   const state = getState();
   const totalStudents = state.voters.length;
   const totalVotes = Object.values(state.votes).reduce((sum, value) => sum + value, 0);
-  const voteTotal = totalVotes || 1;
-
-  const lista1Percent = ((state.votes.lista1 / voteTotal) * 100).toFixed(1);
-  const lista2Percent = ((state.votes.lista2 / voteTotal) * 100).toFixed(1);
-  const blancoPercent = ((state.votes.blanco / voteTotal) * 100).toFixed(1);
-  const participation = totalStudents ? ((totalVotes / totalStudents) * 100).toFixed(1) : "0.0";
-  const remaining = totalStudents - totalVotes;
+  const totalForPercentage = totalVotes || 1;
 
   document.getElementById("lista1Count").textContent = state.votes.lista1;
   document.getElementById("lista2Count").textContent = state.votes.lista2;
   document.getElementById("blancoCount").textContent = state.votes.blanco;
   document.getElementById("totalVotes").textContent = totalVotes;
-  document.getElementById("lista1Percent").textContent = `${lista1Percent}%`;
-  document.getElementById("lista2Percent").textContent = `${lista2Percent}%`;
-  document.getElementById("blancoPercent").textContent = `${blancoPercent}%`;
-  document.getElementById("participationPercent").textContent = `${participation}%`;
+  document.getElementById("lista1Percent").textContent = `${((state.votes.lista1 / totalForPercentage) * 100).toFixed(1)}%`;
+  document.getElementById("lista2Percent").textContent = `${((state.votes.lista2 / totalForPercentage) * 100).toFixed(1)}%`;
+  document.getElementById("blancoPercent").textContent = `${((state.votes.blanco / totalForPercentage) * 100).toFixed(1)}%`;
+  document.getElementById("participationPercent").textContent = `${totalStudents ? ((totalVotes / totalStudents) * 100).toFixed(1) : "0.0"}%`;
   document.getElementById("totalStudents").textContent = totalStudents;
-  document.getElementById("remainingVoters").textContent = remaining;
+  document.getElementById("remainingVoters").textContent = totalStudents - totalVotes;
 
   const tableBody = document.getElementById("padronTableBody");
   tableBody.innerHTML = "";
-
   state.voters.forEach((student) => {
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -160,6 +187,7 @@ function verifyCommitteeAccess() {
   setMessage("committeeMessage", "Acceso autorizado.", "success");
   document.getElementById("resultsPanel").classList.remove("hidden");
   renderResults();
+  syncFromFirebase();
 }
 
 function resetVoterSession() {
@@ -176,41 +204,50 @@ function logoutCommittee() {
   showSection("roleSelector");
 }
 
-function bindEvents() {
-  document.getElementById("btnVoter").addEventListener("click", () => {
-    showSection("voterSection");
-  });
-
-  document.getElementById("btnCommittee").addEventListener("click", () => {
-    showSection("committeeSection");
-  });
-
-  document.getElementById("verifyDniBtn").addEventListener("click", verifyDNI);
-
-  document.getElementById("dniInput").addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      verifyDNI();
-    }
-  });
-
-  document.querySelectorAll("[data-vote]").forEach((button) => {
-    button.addEventListener("click", () => {
-      castVote(button.dataset.vote);
+function initializeApp() {
+  initFirebase();
+  
+  if (isFirebaseReady && db) {
+    const firebaseRef = db.ref("elecciones/cristo-morado");
+    firebaseRef.once("value").then((snapshot) => {
+      const data = snapshot.val();
+      if (!data) {
+        firebaseRef.set(defaultState);
+        saveLocalState(defaultState);
+      } else {
+        saveLocalState(data);
+      }
+      renderResults();
+    }).catch((err) => {
+      console.error("Error al inicializar:", err);
+      saveLocalState(defaultState);
+      renderResults();
     });
-  });
-
-  document.getElementById("backToVoter").addEventListener("click", resetVoterSession);
-
-  document.getElementById("loginCommitteeBtn").addEventListener("click", verifyCommitteeAccess);
-
-  document.getElementById("pinInput").addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      verifyCommitteeAccess();
-    }
-  });
-
-  document.getElementById("logoutCommitteeBtn").addEventListener("click", logoutCommittee);
+  } else {
+    saveLocalState(defaultState);
+    renderResults();
+  }
+  
+  showSection("roleSelector");
 }
 
-bindEvents();
-showSection("roleSelector");
+document.getElementById("btnVoter").addEventListener("click", () => showSection("voterSection"));
+document.getElementById("btnCommittee").addEventListener("click", () => showSection("committeeSection"));
+
+document.getElementById("verifyDniBtn").addEventListener("click", verifyDNI);
+document.getElementById("dniInput").addEventListener("keydown", (event) => {
+  if (event.key === "Enter") verifyDNI();
+});
+
+document.querySelectorAll("[data-vote]").forEach((button) => {
+  button.addEventListener("click", () => castVote(button.dataset.vote));
+});
+
+document.getElementById("backToVoter").addEventListener("click", resetVoterSession);
+document.getElementById("loginCommitteeBtn").addEventListener("click", verifyCommitteeAccess);
+document.getElementById("pinInput").addEventListener("keydown", (event) => {
+  if (event.key === "Enter") verifyCommitteeAccess();
+});
+document.getElementById("logoutCommitteeBtn").addEventListener("click", logoutCommittee);
+
+initializeApp();
