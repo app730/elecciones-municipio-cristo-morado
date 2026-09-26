@@ -3,115 +3,121 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Elecciones Municipal Escolar</title>
+    <meta name="description" content="Elecciones del Municipio Escolar de la I.E. Cristo Morado" />
+    <title>Elecciones | I.E. Cristo Morado</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="page-shell">
       <header class="topbar">
         <div class="brand">
-          <span class="badge">I.E.</span>
+          <span class="badge">CM</span>
           <div>
-            <h1>Municipio Escolar</h1>
-            <p>Cristo Morado</p>
+            <p class="eyebrow">I.E. CRISTO MORADO</p>
+            <h1>Elecciones del Municipio Escolar</h1>
+            <p>Participa y elige responsablemente</p>
           </div>
         </div>
       </header>
 
       <main class="container">
-        <section id="roleSelector" class="card">
-          <h2>Acceso al sistema</h2>
-          <p>Seleccione el tipo de usuario.</p>
+        <section id="roleSelector" class="card welcome-card">
+          <div class="welcome-icon" aria-hidden="true">🗳️</div>
+          <p class="section-kicker">Jornada democrática escolar</p>
+          <h2>¡Tu voto cuenta!</h2>
+          <p>Ingresa al sistema para emitir tu voto de forma segura, rápida y confidencial.</p>
           <div class="button-row">
-            <button id="btnVoter" class="btn btn-primary">Votante</button>
-            <button id="btnCommittee" class="btn btn-secondary">Comité Electoral</button>
+            <button id="btnVoter" class="btn btn-primary btn-large">Votar</button>
           </div>
+          <div class="security-note"><span aria-hidden="true">🔒</span> Tu elección es confidencial</div>
         </section>
 
         <section id="voterSection" class="card hidden">
-          <h2>Identificación de votante</h2>
+          <div class="section-heading">
+            <span class="step-number">1</span>
+            <div>
+              <p class="section-kicker">Verificación</p>
+              <h2>Identificación de estudiante</h2>
+            </div>
+          </div>
+          <p>Ingresa tu DNI para verificar que estás registrado en el padrón electoral.</p>
           <div class="field-group">
             <label for="dniInput">DNI del estudiante</label>
-            <input id="dniInput" type="text" maxlength="8" inputmode="numeric" placeholder="Ingrese su DNI" />
-            <button id="verifyDniBtn" class="btn btn-primary">Verificar</button>
+            <input id="dniInput" type="text" maxlength="8" inputmode="numeric" placeholder="Ejemplo: 12345678" autocomplete="off" />
+            <button id="verifyDniBtn" class="btn btn-primary">Continuar</button>
           </div>
           <div id="dniMessage" class="message" aria-live="polite"></div>
         </section>
 
         <section id="voteSection" class="card hidden">
-          <h2>Seleccione su voto</h2>
+          <div class="section-heading">
+            <span class="step-number">2</span>
+            <div>
+              <p class="section-kicker">Cédula electoral</p>
+              <h2>Elige una opción</h2>
+            </div>
+          </div>
           <div id="voterInfo" class="voter-info"></div>
+          <p class="vote-instruction">Selecciona solo una alternativa. Esta acción no se puede deshacer.</p>
 
           <div class="ballot-grid">
             <button class="ballot-option option-lista1" data-vote="lista1">
+              <span class="list-number">01</span>
               <span class="option-title">Lista 1</span>
-              <span class="option-body">
-                Alcalde: Miguel García<br />
-                Teniente Alcalde: Ana López<br />
-                Secretario: Carlos Rodríguez<br />
-                Tesorero: Laura Martínez
-              </span>
+              <span class="option-body">Miguel García · Alcalde<br />Ana López · Teniente Alcalde<br />Carlos Rodríguez · Secretario<br />Laura Martínez · Tesorera</span>
             </button>
 
             <button class="ballot-option option-lista2" data-vote="lista2">
+              <span class="list-number">02</span>
               <span class="option-title">Lista 2</span>
-              <span class="option-body">
-                Alcalde: Juan Pérez<br />
-                Teniente Alcalde: María Flores<br />
-                Secretario: Roberto Sánchez<br />
-                Tesorero: Elena Torres
-              </span>
+              <span class="option-body">Juan Pérez · Alcalde<br />María Flores · Teniente Alcalde<br />Roberto Sánchez · Secretario<br />Elena Torres · Tesorera</span>
             </button>
 
             <button class="ballot-option option-blank" data-vote="blanco">
-              <span class="option-title">Voto en Blanco</span>
+              <span class="list-number">—</span>
+              <span class="option-title">Voto en blanco</span>
               <span class="option-body">No apoyar ninguna lista.</span>
             </button>
           </div>
         </section>
 
-        <section id="confirmationSection" class="card hidden">
+        <section id="confirmationSection" class="card confirmation-card hidden">
+          <div class="success-icon" aria-hidden="true">✓</div>
+          <p class="section-kicker">Proceso terminado</p>
           <h2>Voto registrado</h2>
-          <p>Su voto fue registrado correctamente.</p>
-          <button id="backToVoter" class="btn btn-primary">Volver</button>
+          <p>Tu voto fue registrado correctamente. Gracias por participar en la elección del Municipio Escolar.</p>
+          <button id="backToVoter" class="btn btn-primary">Finalizar</button>
         </section>
 
         <section id="committeeSection" class="card hidden">
-          <h2>Acceso del Comité Electoral</h2>
+          <div class="section-heading">
+            <span class="step-number">✓</span>
+            <div>
+              <p class="section-kicker">Área restringida</p>
+              <h2>Comité Electoral</h2>
+            </div>
+          </div>
           <div id="committeeLogin" class="field-group login-box">
             <label for="pinInput">PIN de acceso</label>
-            <input id="pinInput" type="password" maxlength="6" placeholder="Ingrese el PIN" />
-            <button id="loginCommitteeBtn" class="btn btn-secondary">Entrar</button>
+            <input id="pinInput" type="password" maxlength="6" placeholder="Ingrese el PIN" autocomplete="off" />
+            <button id="loginCommitteeBtn" class="btn btn-secondary">Ingresar</button>
           </div>
           <div id="committeeMessage" class="message" aria-live="polite"></div>
 
           <div id="resultsPanel" class="hidden">
             <div class="results-header">
-              <h3>Resultados electorales</h3>
+              <div>
+                <p class="section-kicker">Consulta interna</p>
+                <h3>Resultados electorales</h3>
+              </div>
               <button id="logoutCommitteeBtn" class="btn btn-ghost">Cerrar sesión</button>
             </div>
 
             <div class="stats-grid">
-              <div class="stat-card">
-                <span>Lista 1</span>
-                <strong id="lista1Count">0</strong>
-                <small id="lista1Percent">0%</small>
-              </div>
-              <div class="stat-card">
-                <span>Lista 2</span>
-                <strong id="lista2Count">0</strong>
-                <small id="lista2Percent">0%</small>
-              </div>
-              <div class="stat-card">
-                <span>Voto en blanco</span>
-                <strong id="blancoCount">0</strong>
-                <small id="blancoPercent">0%</small>
-              </div>
-              <div class="stat-card accent">
-                <span>Total de votos</span>
-                <strong id="totalVotes">0</strong>
-                <small>Emitidos</small>
-              </div>
+              <div class="stat-card lista1-stat"><span>Lista 1</span><strong id="lista1Count">0</strong><small id="lista1Percent">0%</small></div>
+              <div class="stat-card lista2-stat"><span>Lista 2</span><strong id="lista2Count">0</strong><small id="lista2Percent">0%</small></div>
+              <div class="stat-card blank-stat"><span>Voto en blanco</span><strong id="blancoCount">0</strong><small id="blancoPercent">0%</small></div>
+              <div class="stat-card accent"><span>Total de votos</span><strong id="totalVotes">0</strong><small>Emitidos</small></div>
             </div>
 
             <div class="summary-box">
@@ -122,20 +128,18 @@
 
             <div class="table-wrapper">
               <table>
-                <thead>
-                  <tr>
-                    <th>DNI</th>
-                    <th>Nombre</th>
-                    <th>Grado</th>
-                    <th>Estado</th>
-                  </tr>
-                </thead>
+                <thead><tr><th>DNI</th><th>Nombre</th><th>Grado</th><th>Estado</th></tr></thead>
                 <tbody id="padronTableBody"></tbody>
               </table>
             </div>
           </div>
         </section>
       </main>
+
+      <footer class="site-footer">
+        <span>© I.E. Cristo Morado · Elecciones del Municipio Escolar</span>
+        <button id="btnCommittee" class="admin-access" type="button">Acceso administrativo</button>
+      </footer>
     </div>
 
     <script src="script.js"></script>
