@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elecciones Municipio Escolar - I.E. Cristo Morado</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Elecciones Municipio Escolar</h1>
+            <p class="subtitle">I.E. Cristo Morado</p>
+        </header>
+
+        <!-- Selección de rol (Votante o Comité Electoral) -->
+        <div id="selectRole" class="role-selection">
+            <h2>¿Quién eres?</h2>
+            <button class="btn btn-voter" onclick="selectRole('voter')">
+                🗳️ Soy Votante
+            </button>
+            <button class="btn btn-committee" onclick="selectRole('committee')">
+                📊 Comité Electoral
+            </button>
+        </div>
+
+        <!-- SECCIÓN VOTANTE -->
+        <div id="voterSection" class="section hidden">
+            <!-- Paso 1: Identificación -->
+            <div id="identificationStep" class="step">
+                <h2>Identificación del Votante</h2>
+                <p>Ingresa tu DNI para verificar que estés en el padrón de estudiantes</p>
+                <div class="form-group">
+                    <label for="dniInput">Número de DNI:</label>
+                    <input type="text" id="dniInput" placeholder="Ej: 12345678" maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <button class="btn btn-primary" onclick="verifyDNI()">Verificar DNI</button>
+                </div>
+                <div id="identificationError" class="error hidden"></div>
+                <div id="identificationSuccess" class="success hidden"></div>
+            </div>
+
+            <!-- Paso 2: Votación -->
+            <div id="votingStep" class="step hidden">
+                <h2>Selecciona tu voto</h2>
+                <p id="voterName" class="voter-name"></p>
+                <div class="voting-options">
+                    <div class="vote-option" onclick="castVote('lista1')">
+                        <div class="option-header">
+                            <h3>📋 Lista 1</h3>
+                        </div>
+                        <div class="candidates-list">
+                            <p><strong>Alcalde:</strong> Miguel García</p>
+                            <p><strong>Teniente Alcalde:</strong> Ana López</p>
+                            <p><strong>Secretario:</strong> Carlos Rodríguez</p>
+                            <p><strong>Tesorero:</strong> Laura Martínez</p>
+                        </div>
+                    </div>
+
+                    <div class="vote-option" onclick="castVote('lista2')">
+                        <div class="option-header">
+                            <h3>📋 Lista 2</h3>
+                        </div>
+                        <div class="candidates-list">
+                            <p><strong>Alcalde:</strong> Juan Pérez</p>
+                            <p><strong>Teniente Alcalde:</strong> María Flores</p>
+                            <p><strong>Secretario:</strong> Roberto Sánchez</p>
+                            <p><strong>Tesorero:</strong> Elena Torres</p>
+                        </div>
+                    </div>
+
+                    <div class="vote-option blank-vote" onclick="castVote('blank')">
+                        <div class="option-header">
+                            <h3>⬜ Voto en Blanco</h3>
+                        </div>
+                        <p>No votar por ninguna lista</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paso 3: Confirmación -->
+            <div id="confirmationStep" class="step hidden">
+                <h2>✓ Voto Registrado</h2>
+                <p class="confirmation-message">Tu voto ha sido registrado correctamente.</p>
+                <p class="confirmation-note">Gracias por participar en las elecciones del municipio escolar.</p>
+                <button class="btn btn-primary" onclick="returnHome()">Volver al inicio</button>
+            </div>
+        </div>
+
+        <!-- SECCIÓN COMITÉ ELECTORAL -->
+        <div id="committeeSection" class="section hidden">
+            <!-- Acceso restringido -->
+            <div id="committeeLogin" class="step">
+                <h2>Acceso Comité Electoral</h2>
+                <p>Ingresa el PIN de acceso</p>
+                <div class="form-group">
+                    <label for="pinInput">PIN:</label>
+                    <input type="password" id="pinInput" placeholder="Ingresa el PIN" maxlength="6">
+                    <button class="btn btn-primary" onclick="verifyPIN()">Acceder</button>
+                </div>
+                <div id="pinError" class="error hidden"></div>
+            </div>
+
+            <!-- Panel de resultados -->
+            <div id="resultsPanel" class="step hidden">
+                <div class="committee-header">
+                    <h2>Panel de Resultados</h2>
+                    <button class="btn btn-secondary" onclick="logout()">Cerrar Sesión</button>
+                </div>
+
+                <div class="results-container">
+                    <div class="result-card">
+                        <h3>📊 Resultados por Lista</h3>
+                        <div class="result-item">
+                            <span>Lista 1:</span>
+                            <strong id="lista1Count">0</strong> votos
+                            <div class="progress-bar">
+                                <div class="progress" id="lista1Progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="result-item">
+                            <span>Lista 2:</span>
+                            <strong id="lista2Count">0</strong> votos
+                            <div class="progress-bar">
+                                <div class="progress" id="lista2Progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="result-item">
+                            <span>Votos en Blanco:</span>
+                            <strong id="blankCount">0</strong> votos
+                            <div class="progress-bar">
+                                <div class="progress blank" id="blankProgress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <h3>📈 Estadísticas Generales</h3>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span>Total de Votos:</span>
+                                <strong id="totalVotes">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Total de Estudiantes en Padrón:</span>
+                                <strong id="totalStudents">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Participación:</span>
+                                <strong id="participation">0%</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Estudiantes que Falta Votar:</span>
+                                <strong id="remainingVoters">0</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>📝 Padrón de Votantes</h3>
+                    <div class="voters-table">
+                        <table id="votersTable">
+                            <thead>
+                                <tr>
+                                    <th>DNI</th>
+                                    <th>Nombre</th>
+                                    <th>Grado</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="votersTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="refreshResults()">Actualizar Resultados</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
